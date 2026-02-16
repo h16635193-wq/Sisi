@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Bust Clicker</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script type="importmap">
     {
         "imports": {
@@ -16,38 +16,25 @@
     </script>
     <style>
         :root {
-            /* Основные цвета */
-            --bg-primary: #0a0e27;
-            --bg-secondary: #1a1f3a;
-            --bg-card: rgba(26, 31, 58, 0.6);
-            --bg-elevated: rgba(42, 50, 90, 0.5);
-            
-            /* Неоновые акценты */
-            --accent-pink: #ff006e;
-            --accent-purple: #b537f2;
-            --accent-cyan: #00d9ff;
-            --accent-glow-pink: rgba(255, 0, 110, 0.4);
-            --accent-glow-purple: rgba(181, 55, 242, 0.3);
-            
-            /* Текст */
+            --bg-primary: #0d0d12;
+            --bg-secondary: #16161d;
+            --bg-card: #1e1e27;
+            --bg-elevated: #26262f;
+            --accent: #ff4d8d;
+            --accent-glow: rgba(255, 77, 141, 0.4);
             --text-primary: #ffffff;
-            --text-secondary: #b0b3d9;
-            --text-muted: #7a7d9a;
-            
-            /* Границы и элементы */
-            --border: rgba(255, 255, 255, 0.08);
-            --border-glow: rgba(255, 0, 110, 0.2);
-            
-            /* Статусы */
+            --text-secondary: #9a9ab0;
+            --text-muted: #5a5a70;
+            --border: #2e2e3a;
             --success: #4ade80;
             --warning: #fbbf24;
             --danger: #f87171;
             --gold: #fcd34d;
+            --purple: #b366ff;
         }
 
         * {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
@@ -64,30 +51,21 @@
 
         .bg-gradient {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: 
-                radial-gradient(ellipse at 20% 50%, rgba(255, 0, 110, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(181, 55, 242, 0.12) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 100%, rgba(0, 217, 255, 0.08) 0%, transparent 60%);
+                radial-gradient(ellipse at 50% 0%, rgba(255, 77, 141, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(179, 102, 255, 0.1) 0%, transparent 40%);
             pointer-events: none;
             z-index: 0;
         }
 
-        /* ============ HEADER ============ */
         .header {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 100;
-            background: linear-gradient(to bottom, var(--bg-primary) 70%, transparent);
-            backdrop-filter: blur(10px);
+            background: linear-gradient(to bottom, var(--bg-primary) 60%, transparent);
             padding: 12px 16px;
             padding-top: max(12px, env(safe-area-inset-top));
-            border-bottom: 1px solid var(--border);
         }
 
         .header-content {
@@ -98,86 +76,36 @@
             margin: 0 auto;
         }
 
-        .user-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .user-section { display: flex; align-items: center; gap: 10px; }
 
         .user-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 16px;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #b366ff);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 14px;
             overflow: hidden;
-            border: 2px solid var(--border-glow);
-            box-shadow: 0 0 20px var(--accent-glow-pink);
-            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
+        
+        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .user-info h2 { font-size: 14px; font-weight: 600; }
+        .user-info span { font-size: 11px; color: var(--text-secondary); }
 
-        .user-avatar:hover {
-            box-shadow: 0 0 30px var(--accent-glow-pink), 0 0 60px rgba(255, 0, 110, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .user-info h2 {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .user-info span {
-            font-size: 11px;
-            color: var(--text-secondary);
-        }
-
-        .stats-row {
-            display: flex;
-            gap: 8px;
-        }
+        .stats-row { display: flex; gap: 8px; }
 
         .stat-badge {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            display: flex; align-items: center; gap: 6px;
             background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            padding: 8px 14px;
-            border-radius: 12px;
+            padding: 6px 12px;
+            border-radius: 20px;
             border: 1px solid var(--border);
             font-size: 13px;
             font-weight: 600;
-            transition: all 0.3s ease;
         }
+        .stat-badge.coins .icon { color: var(--gold); }
+        .stat-badge.size .icon { color: var(--accent); }
 
-        .stat-badge:hover {
-            border-color: var(--accent-pink);
-            background: rgba(26, 31, 58, 0.8);
-            box-shadow: 0 0 15px rgba(255, 0, 110, 0.2);
-        }
-
-        .stat-badge.coins .icon {
-            color: var(--gold);
-            font-weight: 700;
-        }
-
-        .stat-badge.size .icon {
-            color: var(--accent-pink);
-            font-weight: 700;
-        }
-
-        /* ============ MAIN CONTAINER ============ */
         .main-container {
             position: relative;
             z-index: 1;
@@ -186,791 +114,576 @@
             min-height: 100vh;
         }
 
-        .tab-content {
-            display: none;
-            animation: fadeInUp 0.4s ease;
-        }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
 
-        .tab-content.active {
-            display: block;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ============ GAME SECTION ============ */
-        .game-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 16px;
-        }
+        .game-section { display: flex; flex-direction: column; align-items: center; padding: 16px; }
 
         .model-container {
             width: 100%;
             max-width: 350px;
-            height: 380px;
+            height: 360px;
             border-radius: 24px;
-            background: linear-gradient(135deg, rgba(42, 50, 90, 0.5) 0%, rgba(26, 31, 58, 0.3) 100%);
-            backdrop-filter: blur(20px);
-            border: 2px solid var(--border-glow);
+            background: radial-gradient(circle at 50% 40%, #2a2a35 0%, #111115 100%);
+            border: 1px solid var(--border);
             overflow: hidden;
             position: relative;
-            margin-bottom: 20px;
-            box-shadow: 
-                0 8px 32px rgba(255, 0, 110, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            margin-bottom: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: transform 0.1s ease;
         }
 
-        .model-container:hover {
-            border-color: var(--accent-pink);
-            box-shadow: 
-                0 12px 40px rgba(255, 0, 110, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            transform: translateY(-4px);
-        }
-
-        .model-container:active {
-            transform: scale(0.98);
-        }
-
-        .model-canvas {
-            width: 100%;
-            height: 100%;
-        }
+        .model-container:active { transform: scale(0.98); }
+        .model-canvas { width: 100%; height: 100%; }
 
         .size-indicator {
             position: absolute;
-            bottom: 16px;
-            left: 50%;
+            bottom: 12px; left: 50%;
             transform: translateX(-50%);
-            background: rgba(10, 14, 39, 0.8);
-            backdrop-filter: blur(15px);
-            padding: 8px 18px;
-            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            padding: 6px 16px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            border: 1px solid var(--border-glow);
+            gap: 6px;
+            border: 1px solid var(--accent);
             font-size: 14px;
-            font-weight: 600;
             pointer-events: none;
-            box-shadow: 0 4px 20px rgba(255, 0, 110, 0.2);
         }
+        .size-indicator span { color: var(--accent); font-weight: 700; }
 
-        .size-indicator span {
-            color: var(--accent-pink);
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        /* ============ LEVEL BAR ============ */
         .level-bar-container {
             width: 100%;
             max-width: 350px;
             background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 12px 16px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 8px 12px;
+            margin-bottom: 16px;
             border: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            gap: 4px;
         }
-
+        
         .level-info {
             display: flex;
             justify-content: space-between;
             font-size: 12px;
             font-weight: 600;
-            color: var(--text-secondary);
         }
 
         .level-progress-bg {
             width: 100%;
-            height: 8px;
+            height: 6px;
             background: var(--bg-elevated);
-            border-radius: 4px;
+            border-radius: 3px;
             overflow: hidden;
-            border: 1px solid var(--border);
         }
 
         .level-progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple), var(--accent-cyan));
-            border-radius: 4px;
-            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 0 15px var(--accent-glow-pink);
+            background: linear-gradient(90deg, var(--accent), #b366ff);
+            border-radius: 3px;
+            transition: width 0.3s ease;
         }
 
-        /* ============ CLICK CONTROLS ============ */
-        .click-controls {
-            width: 100%;
-            max-width: 350px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .per-click {
-            text-align: center;
-            font-size: 14px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .per-click strong {
-            color: var(--accent-pink);
-            font-weight: 700;
-            font-size: 16px;
-        }
+        .click-controls { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 14px; }
+        .per-click { text-align: center; font-size: 13px; color: var(--text-secondary); }
+        .per-click strong { color: var(--accent); }
 
         .exchange-section {
             background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 16px;
+            border-radius: 18px;
+            padding: 14px;
             border: 1px solid var(--border);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
-
-        .exchange-title {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-        }
-
-        .exchange-row {
-            display: flex;
-            gap: 10px;
-        }
-
+        .exchange-title { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+        .exchange-row { display: flex; gap: 8px; }
         .exchange-input {
             flex: 1;
             background: var(--bg-elevated);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: 10px;
+            padding: 10px;
             color: var(--text-primary);
             font-size: 14px;
             font-weight: 600;
             text-align: center;
-            transition: all 0.3s ease;
         }
-
-        .exchange-input:focus {
-            outline: none;
-            border-color: var(--accent-pink);
-            box-shadow: 0 0 15px rgba(255, 0, 110, 0.2);
-            background: rgba(42, 50, 90, 0.6);
-        }
-
+        .exchange-input:focus { outline: none; border-color: var(--accent); }
         .exchange-btn {
-            padding: 12px 20px;
-            border-radius: 12px;
+            padding: 10px 16px;
+            border-radius: 10px;
             border: none;
-            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            background: var(--accent);
             color: white;
-            font-size: 13px;
-            font-weight: 700;
+            font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(255, 0, 110, 0.3);
-            white-space: nowrap;
+            transition: transform 0.1s;
         }
+        .exchange-btn:active { transform: scale(0.95); }
+        .exchange-rate { margin-top: 8px; font-size: 10px; color: var(--text-muted); text-align: center; }
 
-        .exchange-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 30px rgba(255, 0, 110, 0.4);
-        }
+        .section-content { padding: 16px; max-width: 500px; margin: 0 auto; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .section-title { font-size: 18px; font-weight: 700; }
 
-        .exchange-btn:active {
-            transform: scale(0.95);
-        }
-
-        .exchange-rate {
-            margin-top: 10px;
-            font-size: 11px;
-            color: var(--text-muted);
-            text-align: center;
-        }
-
-        /* ============ SECTION CONTENT ============ */
-        .section-content {
-            padding: 20px 16px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-pink), var(--accent-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* ============ UPGRADE CARDS ============ */
-        .upgrade-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
+        /* Upgrade Tab Styles */
+        .upgrade-grid { display: flex; flex-direction: column; gap: 10px; }
+        
         .upgrade-card {
             background: var(--bg-card);
-            backdrop-filter: blur(10px);
             border-radius: 16px;
             padding: 14px;
             border: 1px solid var(--border);
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
-
-        .upgrade-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 0, 110, 0.1), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        .upgrade-card:hover {
-            border-color: var(--accent-pink);
-            box-shadow: 0 8px 30px rgba(255, 0, 110, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .upgrade-card:hover::before {
-            opacity: 1;
-        }
-
-        .upgrade-card.maxed {
-            border-color: var(--gold);
-            opacity: 0.7;
-        }
-
+        .upgrade-card:hover { border-color: var(--accent); }
+        .upgrade-card.maxed { border-color: var(--gold); opacity: 0.7; }
         .upgrade-card.maxed::after {
             content: 'МАКС';
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: linear-gradient(135deg, var(--gold), #f59e0b);
-            color: #0a0e27;
-            font-size: 10px;
+            top: 8px; right: 8px;
+            background: var(--gold);
+            color: #1a1a1a;
+            font-size: 9px;
             font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(252, 211, 77, 0.3);
+            padding: 2px 8px;
+            border-radius: 6px;
         }
-
+        
         .upgrade-top {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
-
+        
         .upgrade-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
+            width: 48px; height: 48px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 800;
             flex-shrink: 0;
-            background: linear-gradient(135deg, rgba(255, 0, 110, 0.2), rgba(181, 55, 242, 0.2));
-            border: 1px solid var(--border-glow);
         }
-
-        .upgrade-info {
-            flex: 1;
-        }
-
-        .upgrade-name {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 2px;
-            color: var(--text-primary);
-        }
-
-        .upgrade-desc {
-            font-size: 11px;
-            color: var(--text-secondary);
-            line-height: 1.4;
-        }
-
+        
+        .upgrade-info { flex: 1; }
+        .upgrade-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+        .upgrade-desc { font-size: 11px; color: var(--text-secondary); line-height: 1.3; }
         .upgrade-level-badge {
             font-size: 11px;
-            color: var(--accent-cyan);
+            color: var(--purple);
             font-weight: 600;
-            margin-top: 4px;
+            margin-top: 2px;
         }
-
+        
         .upgrade-bottom {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 10px;
         }
-
+        
         .upgrade-cost {
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
             gap: 2px;
         }
-
+        
         .upgrade-cost-label {
             font-size: 9px;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
+        
         .upgrade-cost-value {
             font-size: 14px;
             font-weight: 700;
-            color: var(--accent-pink);
+            color: var(--accent);
         }
-
-        .upgrade-cost-value.coins-cost {
-            color: var(--gold);
+        .upgrade-cost-value.coins-cost { color: var(--gold); }
+        
+        .upgrade-progress-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--bg-elevated);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0 10px;
         }
-
+        
+        .upgrade-progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
         .upgrade-buy-btn {
-            padding: 10px 16px;
-            border-radius: 10px;
+            padding: 10px 20px;
+            border-radius: 12px;
             border: none;
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
             white-space: nowrap;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
-
+        .upgrade-buy-btn:active { transform: scale(0.93); }
         .upgrade-buy-btn.size-btn {
-            background: linear-gradient(135deg, var(--accent-pink), #e0437a);
+            background: linear-gradient(135deg, var(--accent), #e0437a);
             color: white;
-            box-shadow: 0 4px 15px rgba(255, 0, 110, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 77, 141, 0.3);
         }
-
-        .upgrade-buy-btn.size-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(255, 0, 110, 0.4);
-        }
-
         .upgrade-buy-btn.coins-btn {
             background: linear-gradient(135deg, var(--gold), #e6b800);
-            color: #0a0e27;
+            color: #1a1a1a;
             box-shadow: 0 4px 15px rgba(252, 211, 77, 0.3);
-            font-weight: 700;
         }
-
-        .upgrade-buy-btn.coins-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(252, 211, 77, 0.4);
-        }
-
-        .upgrade-buy-btn:active {
-            transform: scale(0.93);
-        }
-
         .upgrade-buy-btn:disabled {
             opacity: 0.4;
             cursor: not-allowed;
             transform: none !important;
             box-shadow: none;
         }
-
-        /* ============ SHOP ITEMS ============ */
-        .shop-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        
+        .upgrade-effect-preview {
+            font-size: 10px;
+            color: var(--success);
+            margin-top: 4px;
         }
 
+        .upgrade-category {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 16px 0 8px;
+            padding-left: 4px;
+        }
+        .upgrade-category:first-child { margin-top: 0; }
+
+        /* Shop */
+        .shop-grid { display: flex; flex-direction: column; gap: 8px; }
         .shop-item {
             display: flex;
             align-items: center;
             gap: 12px;
             background: var(--bg-card);
-            backdrop-filter: blur(10px);
             border-radius: 14px;
             padding: 12px;
             border: 1px solid var(--border);
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
         }
-
-        .shop-item:hover {
-            border-color: var(--accent-pink);
-            box-shadow: 0 6px 25px rgba(255, 0, 110, 0.2);
-            transform: translateY(-2px);
-        }
-
+        .shop-item:hover { border-color: var(--accent); }
         .shop-item-icon {
-            width: 48px;
-            height: 48px;
+            width: 44px; height: 44px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             flex-shrink: 0;
-            background: linear-gradient(135deg, rgba(255, 0, 110, 0.2), rgba(181, 55, 242, 0.2));
-            border: 1px solid var(--border-glow);
         }
+        .shop-item-info { flex: 1; }
+        .shop-item-name { font-size: 13px; font-weight: 600; }
+        .shop-item-desc { font-size: 11px; color: var(--text-secondary); }
+        .shop-item-price { font-size: 13px; font-weight: 700; color: var(--gold); }
 
-        .shop-item-info {
+        /* Cases */
+        .cases-grid { display: flex; flex-direction: column; gap: 12px; }
+        .case-card {
+            background: var(--bg-card);
+            border-radius: 18px;
+            padding: 16px;
+            text-align: center;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .case-card:hover { transform: translateY(-3px); }
+        .case-icon { width: 50px; height: 50px; margin: 0 auto 10px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .case-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+        .case-desc { font-size: 11px; color: var(--text-secondary); margin-bottom: 10px; }
+        .case-price { display: inline-flex; align-items: center; gap: 4px; background: var(--bg-elevated); padding: 8px 16px; border-radius: 16px; font-weight: 600; font-size: 13px; }
+
+        /* Leaderboard */
+        .leaderboard-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+        .lb-tab {
             flex: 1;
-        }
-
-        .shop-item-name {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 2px;
-        }
-
-        .shop-item-price {
-            font-size: 12px;
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
             color: var(--text-secondary);
-        }
-
-        .shop-timer {
-            font-size: 12px;
-            color: var(--text-muted);
+            font-size: 11px;
             font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
+        .lb-tab.active { background: var(--accent); border-color: var(--accent); color: white; }
 
-        /* ============ BOTTOM NAVIGATION ============ */
+        .leaderboard-list { display: flex; flex-direction: column; gap: 6px; }
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+        }
+        .leaderboard-item.current-user { border-color: var(--accent); background: rgba(255, 77, 141, 0.1); }
+        
+        .lb-rank { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; background: var(--bg-elevated); }
+        .lb-rank.gold { background: linear-gradient(135deg, #ffd700, #ffb700); color: #1a1a1a; }
+        .lb-rank.silver { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: #1a1a1a; }
+        .lb-rank.bronze { background: linear-gradient(135deg, #cd7f32, #b87333); color: #1a1a1a; }
+        
+        .lb-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--bg-elevated); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 11px; overflow: hidden; }
+        .lb-info { flex: 1; }
+        .lb-name { font-size: 12px; font-weight: 600; }
+        .lb-name.you { color: var(--accent); }
+        .lb-value { font-size: 13px; font-weight: 700; color: var(--accent); text-align: right; }
+        .lb-value span { display: block; font-size: 10px; color: var(--text-muted); font-weight: 400; }
+
+        /* Achievements */
+        .ach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .ach-item {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid var(--border);
+            opacity: 0.4;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .ach-item:hover { border-color: var(--text-secondary); }
+        .ach-item.unlocked { opacity: 1; border-color: var(--warning); background: rgba(251, 191, 36, 0.1); }
+        .ach-item.selected { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+        .ach-icon { width: 32px; height: 32px; margin: 0 auto 6px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; background: var(--bg-elevated); }
+        .ach-item.unlocked .ach-icon { background: var(--warning); color: #1a1a1a; }
+        .ach-name { font-size: 10px; font-weight: 600; line-height: 1.2; }
+
+        .ach-info-box {
+            margin-top: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: left;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .ach-info-box.empty {
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+        .ach-info-title { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+        .ach-info-desc { font-size: 12px; color: var(--text-secondary); }
+
+        /* Inventory */
+        .inventory-section { margin-bottom: 20px; }
+        .inv-section-title { font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px; }
+        .inventory-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .inventory-item {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .inventory-item:hover { border-color: var(--accent); }
+        .inv-icon { width: 36px; height: 36px; margin: 0 auto 6px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .inv-name { font-size: 11px; font-weight: 600; }
+        .inv-timer { font-size: 9px; color: var(--text-muted); margin-top: 2px; }
+        .use-btn { margin-top: 6px; padding: 5px 10px; border-radius: 6px; border: none; background: var(--accent); color: white; font-size: 9px; font-weight: 600; cursor: pointer; }
+        .empty-text { text-align: center; padding: 16px; color: var(--text-muted); font-size: 12px; }
+
+        /* Bottom Nav */
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 99;
-            background: linear-gradient(to top, var(--bg-primary) 70%, transparent);
-            backdrop-filter: blur(10px);
+            bottom: 0; left: 0; right: 0;
+            background: var(--bg-secondary);
             border-top: 1px solid var(--border);
-            padding-bottom: env(safe-area-inset-bottom);
+            padding: 4px 8px;
+            padding-bottom: max(4px, env(safe-area-inset-bottom));
+            z-index: 100;
         }
-
-        .nav-items {
-            display: flex;
-            justify-content: space-around;
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 8px 0;
-        }
-
+        .nav-items { display: flex; justify-content: space-around; max-width: 500px; margin: 0 auto; }
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            padding: 8px 12px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
+            gap: 1px;
+            padding: 6px 6px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 11px;
-            font-weight: 600;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            min-width: 0;
         }
+        .nav-item.active { color: var(--accent); background: rgba(255, 77, 141, 0.1); }
+        .nav-icon { width: 18px; height: 18px; }
+        .nav-label { font-size: 8px; font-weight: 500; }
 
-        .nav-item:hover {
-            color: var(--accent-pink);
-            transform: translateY(-2px);
-        }
-
-        .nav-item.active {
-            color: var(--accent-pink);
-        }
-
-        .nav-item.active .nav-icon {
-            filter: drop-shadow(0 0 8px rgba(255, 0, 110, 0.6));
-        }
-
-        .nav-icon {
-            width: 24px;
-            height: 24px;
-            stroke-width: 2;
-        }
-
-        /* ============ MODAL ============ */
+        /* Modal */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(10, 14, 39, 0.8);
-            backdrop-filter: blur(8px);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
             z-index: 200;
-            display: none;
+            display: flex;
             align-items: center;
             justify-content: center;
-            padding: 16px;
-            animation: fadeIn 0.3s ease;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
         }
-
-        .modal-overlay.show {
-            display: flex;
-        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
         .modal {
             background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 24px;
-            max-width: 400px;
+            max-width: 340px;
             width: 100%;
-            border: 1px solid var(--border-glow);
-            box-shadow: 0 20px 60px rgba(255, 0, 110, 0.3);
-            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--border);
+            max-height: 85vh;
+            overflow-y: auto;
         }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        .modal-overlay.active .modal { transform: scale(1); }
 
         .modal-icon {
-            font-size: 48px;
-            text-align: center;
+            width: 60px; height: 60px;
+            margin: 0 auto 14px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            animation: popIn 0.4s ease;
+        }
+        @keyframes popIn { 0% { transform: scale(0) rotate(-10deg); } 60% { transform: scale(1.1) rotate(5deg); } 100% { transform: scale(1) rotate(0); } }
+
+        .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .modal-desc { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; }
+        .modal-btn { width: 100%; padding: 12px; border-radius: 12px; border: none; background: var(--accent); color: white; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+        .profile-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+        .profile-stat { background: var(--bg-elevated); border-radius: 10px; padding: 8px; }
+        .profile-stat-val { font-size: 14px; font-weight: 700; color: var(--accent); }
+        .profile-stat-label { font-size: 9px; color: var(--text-muted); }
+
+        .ach-info-display {
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            padding: 10px;
+            min-height: 40px;
             margin-bottom: 16px;
+            text-align: left;
+            border-left: 3px solid var(--accent);
         }
+        .ach-info-title-modal { font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 2px; }
+        .ach-info-desc-modal { font-size: 11px; color: var(--text-secondary); }
 
-        .modal-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 20px;
-            font-weight: 800;
-            margin-bottom: 8px;
-            text-align: center;
-            background: linear-gradient(135deg, var(--accent-pink), var(--accent-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .modal-desc {
-            font-size: 13px;
-            color: var(--text-secondary);
-            text-align: center;
-            margin-bottom: 16px;
-            line-height: 1.5;
-        }
-
-        .modal-btn {
-            width: 100%;
-            padding: 12px;
-            border-radius: 12px;
-            border: none;
-            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-            color: white;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(255, 0, 110, 0.3);
-            margin-top: 16px;
-        }
-
-        .modal-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 30px rgba(255, 0, 110, 0.4);
-        }
-
-        .modal-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* ============ TOAST ============ */
+        /* Toast */
         .toast {
             position: fixed;
-            top: 80px;
-            left: 50%;
+            top: 80px; left: 50%;
             transform: translateX(-50%) translateY(-20px);
             background: var(--bg-elevated);
-            backdrop-filter: blur(10px);
-            padding: 12px 20px;
+            padding: 10px 18px;
             border-radius: 12px;
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 500;
             z-index: 300;
             opacity: 0;
             transition: all 0.3s ease;
             border: 1px solid var(--border);
             max-width: 90%;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast.success { border-color: var(--success); color: var(--success); }
+        .toast.error { border-color: var(--danger); color: var(--danger); }
 
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .toast.success {
-            border-color: var(--success);
-            color: var(--success);
-            box-shadow: 0 4px 20px rgba(74, 222, 128, 0.2);
-        }
-
-        .toast.error {
-            border-color: var(--danger);
-            color: var(--danger);
-            box-shadow: 0 4px 20px rgba(248, 113, 113, 0.2);
-        }
-
-        /* ============ EFFECTS ============ */
+        /* Effects */
         .particle {
             position: fixed;
-            width: 8px;
-            height: 8px;
+            width: 6px; height: 6px;
             border-radius: 50%;
             pointer-events: none;
-            animation: partMove 0.8s ease-out forwards;
+            animation: partMove 0.6s ease-out forwards;
             z-index: 150;
-            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-            box-shadow: 0 0 10px var(--accent-glow-pink);
         }
-
+        
         .heart-particle {
             position: fixed;
-            font-size: 18px;
+            font-size: 16px;
             pointer-events: none;
-            animation: heartFloat 1.2s ease-out forwards;
+            animation: heartFloat 1s ease-out forwards;
             z-index: 150;
-            color: var(--accent-pink);
+            color: #ff4d8d;
             opacity: 0;
-            filter: drop-shadow(0 0 8px var(--accent-glow-pink));
         }
 
-        @keyframes partMove {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(var(--tx), var(--ty)) scale(0);
-            }
-        }
-
-        @keyframes heartFloat {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-120px) scale(1.5);
-            }
-        }
+        @keyframes partMove { 0% { opacity: 1; transform: translate(0, 0) scale(1); } 100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); } }
+        @keyframes heartFloat { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-100px) scale(1.5); } }
 
         .float-num {
             position: fixed;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 800;
             pointer-events: none;
-            animation: floatUp 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            animation: floatUp 0.8s ease-out forwards;
             z-index: 150;
-            background: linear-gradient(135deg, var(--accent-pink), var(--accent-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 10px var(--accent-glow-pink));
+            color: var(--accent);
+            text-shadow: 0 2px 8px rgba(255, 77, 141, 0.5);
         }
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-80px) scale(1.3); } }
 
-        @keyframes floatUp {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-100px) scale(1.3);
-            }
-        }
+        .effect-pill { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 10px; font-size: 10px; font-weight: 500; margin: 2px; }
+        .effect-pill.buff { background: rgba(74, 222, 128, 0.2); border: 1px solid var(--success); color: var(--success); }
+        .effect-pill.debuff { background: rgba(248, 113, 113, 0.2); border: 1px solid var(--danger); color: var(--danger); }
 
-        /* ============ SCROLLBAR ============ */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
+        .RARITY-COMMON { background: #3a3a4a; border: 2px solid #5a5a6a; }
+        .RARITY-RARE { background: linear-gradient(135deg, #b366ff, #8b5cf6); border: 2px solid #b366ff; }
+        .RARITY-EPIC { background: linear-gradient(135deg, #fbbf24, #f59e0b); border: 2px solid #fbbf24; }
+        .RARITY-LEGENDARY { background: linear-gradient(135deg, #ff4d8d, #f43f5e); border: 2px solid #ff4d8d; }
 
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-pink);
-            box-shadow: 0 0 10px rgba(255, 0, 110, 0.3);
-        }
-
-        /* ============ UTILITY ============ */
-        .empty-text {
-            text-align: center;
-            color: var(--text-muted);
-            padding: 20px;
-            font-size: 13px;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
     </style>
 </head>
 <body>
@@ -1044,7 +757,7 @@
         <section class="tab-content" id="shopTab">
             <div class="section-content">
                 <div class="section-header">
-                    <h2 class="section-title">🛍️ Магазин</h2>
+                    <h2 class="section-title">Магазин</h2>
                     <span class="shop-timer" id="shopTimer">--:--:--</span>
                 </div>
                 <div class="shop-grid" id="shopGrid"></div>
@@ -1054,7 +767,7 @@
         <!-- Cases -->
         <section class="tab-content" id="casesTab">
             <div class="section-content">
-                <div class="section-header"><h2 class="section-title">📦 Кейсы</h2></div>
+                <div class="section-header"><h2 class="section-title">Кейсы</h2></div>
                 <div class="cases-grid" id="casesGrid"></div>
             </div>
         </section>
@@ -1062,7 +775,7 @@
         <!-- Top -->
         <section class="tab-content" id="topTab">
             <div class="section-content">
-                <div class="section-header"><h2 class="section-title">🏆 Топ игроков</h2></div>
+                <div class="section-header"><h2 class="section-title">Топ игроков</h2></div>
                 <div class="leaderboard-tabs">
                     <button class="lb-tab active" data-type="size">Размер</button>
                     <button class="lb-tab" data-type="coins">Монеты</button>
@@ -1076,7 +789,7 @@
         <section class="tab-content" id="achTab">
             <div class="section-content">
                 <div class="section-header">
-                    <h2 class="section-title">🎖️ Достижения</h2>
+                    <h2 class="section-title">Достижения</h2>
                     <span id="achProgress">0/0</span>
                 </div>
                 <div class="ach-grid" id="achGrid"></div>
@@ -1185,328 +898,1438 @@
         // ============================================
 
         const UPGRADES = [
-            { id: 'click-power', name: 'Сила клика', icon: '⚡', desc: 'Увеличивает урон за клик', type: 'size', baseCost: 10, costType: 'coins', costMultiplier: 1.15, effect: (lvl) => lvl },
-            { id: 'click-speed', name: 'Скорость клика', icon: '⚙️', desc: 'Ускоряет восстановление', type: 'size', baseCost: 15, costType: 'coins', costMultiplier: 1.15, effect: (lvl) => lvl * 0.5 },
-            { id: 'coin-boost', name: 'Бонус монет', icon: '💰', desc: 'Увеличивает получение монет', type: 'coins', baseCost: 20, costType: 'coins', costMultiplier: 1.2, effect: (lvl) => lvl * 1.5 },
-            { id: 'passive-income', name: 'Пассивный доход', icon: '📈', desc: 'Получайте монеты автоматически', type: 'coins', baseCost: 50, costType: 'coins', costMultiplier: 1.25, effect: (lvl) => lvl * 0.1 },
-            { id: 'size-multiplier', name: 'Множитель размера', icon: '📏', desc: 'Увеличивает размер быстрее', type: 'size', baseCost: 100, costType: 'coins', costMultiplier: 1.3, effect: (lvl) => 1 + lvl * 0.1 }
+            {
+                id: 'click_power',
+                name: 'Сила клика',
+                desc: 'Увеличивает базовый клик',
+                icon: '👆',
+                color: '#ff4d8d',
+                category: 'click',
+                maxLevel: 50,
+                costType: 'size',
+                baseCost: 50,
+                costScale: 1.8,
+                costExponent: 1.15,
+                effect: (lvl) => ({ clickBonus: lvl * 1 }),
+                effectDesc: (lvl) => `+${lvl} к базовому клику`
+            },
+            {
+                id: 'click_multi',
+                name: 'Мультипликатор',
+                desc: 'Множитель силы клика',
+                icon: '✖️',
+                color: '#b366ff',
+                category: 'click',
+                maxLevel: 25,
+                costType: 'size',
+                baseCost: 500,
+                costScale: 2.5,
+                costExponent: 1.25,
+                effect: (lvl) => ({ clickMulti: 1 + lvl * 0.15 }),
+                effectDesc: (lvl) => `x${(1 + lvl * 0.15).toFixed(2)} к клику`
+            },
+            {
+                id: 'critical_chance',
+                name: 'Крит. шанс',
+                desc: 'Шанс критического клика (x5)',
+                icon: '💥',
+                color: '#f59e0b',
+                category: 'click',
+                maxLevel: 20,
+                costType: 'size',
+                baseCost: 1000,
+                costScale: 3.0,
+                costExponent: 1.3,
+                effect: (lvl) => ({ critChance: lvl * 0.02 }),
+                effectDesc: (lvl) => `${(lvl * 2)}% шанс крита`
+            },
+            {
+                id: 'auto_clicker',
+                name: 'Авто-кликер',
+                desc: 'Пассивный рост размера в секунду',
+                icon: '🤖',
+                color: '#4ade80',
+                category: 'passive',
+                maxLevel: 30,
+                costType: 'size',
+                baseCost: 2000,
+                costScale: 2.8,
+                costExponent: 1.22,
+                effect: (lvl) => ({ autoPerSec: lvl }),
+                effectDesc: (lvl) => `+${lvl}/сек автоматически`
+            },
+            {
+                id: 'exchange_rate',
+                name: 'Курс обмена',
+                desc: 'Улучшает курс размер → монеты',
+                icon: '💱',
+                color: '#fcd34d',
+                category: 'economy',
+                maxLevel: 20,
+                costType: 'size',
+                baseCost: 3000,
+                costScale: 3.5,
+                costExponent: 1.35,
+                effect: (lvl) => ({ exchangeBonus: lvl * 1 }),
+                effectDesc: (lvl) => `+${lvl} к курсу обмена (=${3 + lvl})`
+            },
+            {
+                id: 'coin_magnet',
+                name: 'Монетный магнит',
+                desc: 'Шанс получить монеты при клике',
+                icon: '🧲',
+                color: '#60a5fa',
+                category: 'economy',
+                maxLevel: 15,
+                costType: 'coins',
+                baseCost: 5000,
+                costScale: 4.0,
+                costExponent: 1.4,
+                effect: (lvl) => ({ coinChance: lvl * 0.03, coinAmount: Math.ceil(lvl * 2) }),
+                effectDesc: (lvl) => `${(lvl * 3)}% шанс +${Math.ceil(lvl * 2)} монет/клик`
+            },
+            {
+                id: 'level_speed',
+                name: 'Скорость уровня',
+                desc: 'Уменьшает размер для уровня',
+                icon: '⚡',
+                color: '#8b5cf6',
+                category: 'passive',
+                maxLevel: 10,
+                costType: 'size',
+                baseCost: 5000,
+                costScale: 5.0,
+                costExponent: 1.5,
+                effect: (lvl) => ({ levelReduction: lvl * 5 }),
+                effectDesc: (lvl) => `-${lvl * 5} к размеру для уровня`
+            },
+            {
+                id: 'lucky_star',
+                name: 'Счастливая звезда',
+                desc: 'Шанс получить x10 от клика',
+                icon: '⭐',
+                color: '#ff6b6b',
+                category: 'click',
+                maxLevel: 10,
+                costType: 'coins',
+                baseCost: 50000,
+                costScale: 5.5,
+                costExponent: 1.55,
+                effect: (lvl) => ({ luckyChance: lvl * 0.005 }),
+                effectDesc: (lvl) => `${(lvl * 0.5).toFixed(1)}% шанс x10`
+            },
+            {
+                id: 'prestige_power',
+                name: 'Престижная мощь',
+                desc: 'Бонус от уровня увеличен',
+                icon: '👑',
+                color: '#ffd700',
+                category: 'passive',
+                maxLevel: 15,
+                costType: 'size',
+                baseCost: 10000,
+                costScale: 4.0,
+                costExponent: 1.45,
+                effect: (lvl) => ({ levelBonusMod: lvl * 0.5 }),
+                effectDesc: (lvl) => `+${(lvl * 0.5).toFixed(1)}% за каждый уровень`
+            },
+            {
+                id: 'diamond_touch',
+                name: 'Алмазное касание',
+                desc: 'Супер-множитель для всего',
+                icon: '💎',
+                color: '#00ffff',
+                category: 'click',
+                maxLevel: 5,
+                costType: 'size',
+                baseCost: 100000,
+                costScale: 10.0,
+                costExponent: 2.0,
+                effect: (lvl) => ({ globalMulti: 1 + lvl * 0.5 }),
+                effectDesc: (lvl) => `x${(1 + lvl * 0.5).toFixed(1)} ко всему`
+            }
         ];
 
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-
-        function init() {
-            setupEventListeners();
-            loadState();
-            initThreeJS();
-            updateUI();
-            startGameLoop();
+        function getUpgradeLevel(id) {
+            return state.upgrades[id] || 0;
         }
 
-        function setupEventListeners() {
-            // Tab navigation
-            document.querySelectorAll('.nav-item').forEach(btn => {
-                btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+        function getUpgradeCost(upgrade) {
+            const lvl = getUpgradeLevel(upgrade.id);
+            if (lvl >= upgrade.maxLevel) return Infinity;
+            return Math.floor(upgrade.baseCost * Math.pow(upgrade.costScale, lvl) * Math.pow(lvl + 1, upgrade.costExponent));
+        }
+
+        function getUpgradeEffect(id) {
+            const upgrade = UPGRADES.find(u => u.id === id);
+            if (!upgrade) return {};
+            const lvl = getUpgradeLevel(id);
+            return lvl > 0 ? upgrade.effect(lvl) : {};
+        }
+
+        function getAllUpgradeEffects() {
+            const combined = {
+                clickBonus: 0,
+                clickMulti: 1,
+                critChance: 0,
+                autoPerSec: 0,
+                exchangeBonus: 0,
+                coinChance: 0,
+                coinAmount: 0,
+                levelReduction: 0,
+                luckyChance: 0,
+                levelBonusMod: 0,
+                globalMulti: 1
+            };
+            
+            UPGRADES.forEach(u => {
+                const eff = getUpgradeEffect(u.id);
+                Object.keys(eff).forEach(key => {
+                    if (key === 'clickMulti' || key === 'globalMulti') {
+                        combined[key] *= eff[key];
+                    } else {
+                        combined[key] = (combined[key] || 0) + (eff[key] || 0);
+                    }
+                });
             });
-
-            // Game interactions
-            document.getElementById('modelContainer').addEventListener('click', handleClick);
-            document.getElementById('exchangeBtn').addEventListener('click', handleExchange);
-
-            // Modal
-            document.getElementById('modalOverlay').addEventListener('click', (e) => {
-                if (e.target.id === 'modalOverlay') closeModal();
-            });
-            document.getElementById('modalBtn').addEventListener('click', closeModal);
+            
+            return combined;
         }
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        function buyUpgrade(upgrade) {
+            const lvl = getUpgradeLevel(upgrade.id);
+            if (lvl >= upgrade.maxLevel) return showToast('Максимальный уровень!', 'error');
             
-            document.getElementById(tabId).classList.add('active');
-            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
-        }
-
-        function handleClick() {
-            const perClick = 1 + (state.upgrades['click-power']?.level || 0);
-            state.size += perClick;
-            state.totalClicks++;
+            const cost = getUpgradeCost(upgrade);
             
-            // Visual feedback
-            createFloatingNumber(perClick);
-            createParticles();
+            if (upgrade.costType === 'size') {
+                if (state.size < cost) return showToast(`Нужно ${cost.toLocaleString()} размера!`, 'error');
+                state.size -= cost;
+                updateTargetScale();
+            } else {
+                if (state.coins < cost) return showToast(`Нужно ${cost.toLocaleString()} монет!`, 'error');
+                state.coins -= cost;
+            }
             
+            state.upgrades[upgrade.id] = lvl + 1;
+            playSound('buy');
+            
+            const newEffect = upgrade.effect(lvl + 1);
+            showToast(`${upgrade.name} → Ур.${lvl + 1}!`, 'success');
+            
+            renderUpgrades();
             updateUI();
             saveState();
         }
 
-        function handleExchange() {
-            const amount = parseInt(document.getElementById('exchangeAmount').value) || 0;
-            if (amount > 0 && state.size >= amount) {
-                state.size -= amount;
-                state.coins += amount * EXCHANGE_RATE;
-                state.statsExchanges++;
-                showToast(`+${amount * EXCHANGE_RATE} монет`, 'success');
-                updateUI();
-                saveState();
-            } else {
-                showToast('Недостаточно размера', 'error');
+        function renderUpgrades() {
+            const grid = els.upgradeGrid;
+            grid.innerHTML = '';
+            
+            const categories = {
+                click: 'Клик',
+                passive: 'Пассивные',
+                economy: 'Экономика'
+            };
+            
+            const grouped = {};
+            UPGRADES.forEach(u => {
+                if (!grouped[u.category]) grouped[u.category] = [];
+                grouped[u.category].push(u);
+            });
+            
+            Object.keys(categories).forEach(cat => {
+                if (!grouped[cat]) return;
+                
+                const catLabel = document.createElement('div');
+                catLabel.className = 'upgrade-category';
+                catLabel.textContent = categories[cat];
+                grid.appendChild(catLabel);
+                
+                grouped[cat].forEach(upgrade => {
+                    const lvl = getUpgradeLevel(upgrade.id);
+                    const cost = getUpgradeCost(upgrade);
+                    const isMaxed = lvl >= upgrade.maxLevel;
+                    const effects = getAllUpgradeEffects();
+                    
+                    const canAfford = upgrade.costType === 'size' 
+                        ? state.size >= cost 
+                        : state.coins >= cost;
+                    
+                    const card = document.createElement('div');
+                    card.className = `upgrade-card ${isMaxed ? 'maxed' : ''}`;
+                    
+                    const progressPct = (lvl / upgrade.maxLevel) * 100;
+                    const progressColor = upgrade.color;
+                    
+                    card.innerHTML = `
+                        <div class="upgrade-top">
+                            <div class="upgrade-icon" style="background: ${upgrade.color}20; color: ${upgrade.color}; border: 2px solid ${upgrade.color}40;">
+                                ${upgrade.icon}
+                            </div>
+                            <div class="upgrade-info">
+                                <div class="upgrade-name">${upgrade.name}</div>
+                                <div class="upgrade-desc">${upgrade.desc}</div>
+                                <div class="upgrade-level-badge">Уровень ${lvl}/${upgrade.maxLevel}</div>
+                                ${lvl > 0 ? `<div class="upgrade-effect-preview">✓ ${upgrade.effectDesc(lvl)}</div>` : ''}
+                            </div>
+                        </div>
+                        <div class="upgrade-bottom">
+                            <div class="upgrade-cost">
+                                <div class="upgrade-cost-label">${isMaxed ? 'МАКС' : 'Цена'}</div>
+                                <div class="upgrade-cost-value ${upgrade.costType === 'coins' ? 'coins-cost' : ''}">
+                                    ${isMaxed ? '—' : (upgrade.costType === 'size' ? '📏 ' : '💰 ') + cost.toLocaleString()}
+                                </div>
+                            </div>
+                            <div class="upgrade-progress-bar">
+                                <div class="upgrade-progress-fill" style="width: ${progressPct}%; background: ${upgrade.color};"></div>
+                            </div>
+                            <button class="upgrade-buy-btn ${upgrade.costType === 'size' ? 'size-btn' : 'coins-btn'}" 
+                                    ${isMaxed || !canAfford ? 'disabled' : ''}>
+                                ${isMaxed ? 'МАКС' : 'Купить'}
+                            </button>
+                        </div>
+                    `;
+                    
+                    if (!isMaxed) {
+                        card.querySelector('.upgrade-buy-btn').addEventListener('click', () => buyUpgrade(upgrade));
+                    }
+                    
+                    grid.appendChild(card);
+                });
+            });
+        }
+
+        // Data
+        const ACHIEVEMENTS = [
+            { id: 'click1', name: 'Первый шаг', desc: 'Сделай первый клик', icon: '1', condition: s => s.totalClicks >= 1 },
+            { id: 'size10', name: 'Начало', desc: 'Размер 10', icon: 'S', condition: s => s.size >= 10 },
+            { id: 'click100', name: 'Старательный', desc: '100 кликов', icon: 'C', condition: s => s.totalClicks >= 100 },
+            { id: 'size100', name: 'Заметный', desc: 'Размер 100', icon: 'S', condition: s => s.size >= 100 },
+            { id: 'time10m', name: 'Игрок', desc: 'Играй 10 минут', icon: 'T', condition: s => s.totalPlayTime >= 600000 },
+            { id: 'click1000', name: 'Мастер клика', desc: '1000 кликов', icon: 'M', condition: s => s.totalClicks >= 1000 },
+            { id: 'size1000', name: 'Грандиозный', desc: 'Размер 1000', icon: 'S', condition: s => s.size >= 1000 },
+            { id: 'coins10k', name: 'Богач', desc: '10,000 монет', icon: '$', condition: s => s.coins >= 10000 },
+            { id: 'case10', name: 'Азартный', desc: 'Открой 10 кейсов', icon: '?', condition: s => s.statsCases >= 10 },
+            { id: 'click5000', name: 'Легенда клика', desc: '5000 кликов', icon: 'L', condition: s => s.totalClicks >= 5000 },
+            { id: 'size5000', name: 'Идеал', desc: 'Размер 5000', icon: 'S', condition: s => s.size >= 5000 },
+            { id: 'time1h', name: 'Преданный', desc: 'Играй 1 час', icon: 'T', condition: s => s.totalPlayTime >= 3600000 },
+            { id: 'case50', name: 'Охотник', desc: 'Открой 50 кейсов', icon: '?', condition: s => s.statsCases >= 50 },
+            { id: 'click10000', name: 'Клик-машина', desc: '10,000 кликов', icon: '!', condition: s => s.totalClicks >= 10000 },
+            { id: 'size10000', name: 'Богиня', desc: 'Размер 10,000', icon: 'G', condition: s => s.size >= 10000 },
+            { id: 'coins1m', name: 'Миллионер', desc: '1,000,000 монет', icon: '$$', condition: s => s.coins >= 1000000 },
+            { id: 'time10h', name: 'Затяжной', desc: 'Играй 10 часов', icon: 'TT', condition: s => s.totalPlayTime >= 36000000 },
+            { id: 'exchange100', name: 'Торговец', desc: 'Обменяй 100 размера', icon: 'E', condition: s => s.statsExchanges >= 100 },
+            { id: 'buff10', name: 'Химик', desc: 'Используй 10 баффов', icon: 'B', condition: s => s.statsBuffsUsed >= 10 },
+            { id: 'level10', name: 'Опытный', desc: 'Достигни 10 уровня', icon: 'Lv', condition: s => getLevel() >= 10 },
+            { id: 'upgrade5', name: 'Апгрейдер', desc: 'Купи 5 апгрейдов', icon: '⬆', condition: s => Object.values(s.upgrades).reduce((a, b) => a + b, 0) >= 5 },
+            { id: 'upgrade20', name: 'Мастер прокачки', desc: 'Купи 20 апгрейдов', icon: '🔝', condition: s => Object.values(s.upgrades).reduce((a, b) => a + b, 0) >= 20 },
+        ];
+
+        const SHOP_DB = [
+            { id: 'mult2', name: 'Усилитель x2', desc: 'Двойной рост', icon: '2x', price: 5000, color: '#4ade80', type: 'boost', effect: { type: 'multiply', value: 2 }, duration: 600000 },
+            { id: 'auto', name: 'Авто-рост', desc: 'Авто-клик', icon: 'A', price: 30000, color: '#b366ff', type: 'ability', effect: { type: 'autoclick', value: 1 }, duration: 600000 },
+            { id: 'size100', name: 'Размер +100', desc: 'Мгновенно', icon: '+', price: 15000, color: '#ff4d8d', type: 'instant', effect: { type: 'instantSize', value: 100 }, duration: 0 },
+            { id: 'size500', name: 'Размер +500', desc: 'Большая прибавка', icon: '++', price: 60000, color: '#ff4d8d', type: 'instant', effect: { type: 'instantSize', value: 500 }, duration: 0 },
+            { id: 'mult5', name: 'Усилитель x5', desc: 'Мощный буст', icon: '5x', price: 80000, color: '#fbbf24', type: 'boost', effect: { type: 'multiply', value: 5 }, duration: 300000 },
+            { id: 'auto2', name: 'Авто-рост PRO', desc: '2 клика/сек', icon: 'AA', price: 100000, color: '#b366ff', type: 'ability', effect: { type: 'autoclick', value: 2 }, duration: 600000 },
+            { id: 'frenzy', name: 'Френзи x10', desc: 'Бешеный рост', icon: 'F', price: 200000, color: '#ff4d8d', type: 'boost', effect: { type: 'multiply', value: 10 }, duration: 180000 },
+            { id: 'shield', name: 'Щит', desc: 'Блок дебаффа', icon: 'S', price: 10000, color: '#60a5fa', type: 'shield', effect: { type: 'shield', value: 1 }, duration: 0 },
+        ];
+
+        const CASES = [
+            { id: 'common', name: 'Обычный', desc: 'Базовые награды', price: 2000, icon: '?', rarity: 'common' },
+            { id: 'rare', name: 'Редкий', desc: 'Улучшенные', price: 8000, icon: '?', rarity: 'rare' },
+            { id: 'epic', name: 'Эпический', desc: 'Лучшие награды', price: 25000, icon: '?', rarity: 'epic' }
+        ];
+
+        const CASE_REWARDS = [
+            { id: 'size20', name: 'Размер +20', icon: '+', rarity: 'common', weight: 20, type: 'instant', effect: { type: 'instantSize', value: 20 } },
+            { id: 'mult2c', name: 'x2 на 5 мин', icon: '2x', rarity: 'rare', weight: 10, type: 'boost', effect: { type: 'multiply', value: 2 }, duration: 300000 },
+            { id: 'freeze', name: 'Заморозка', icon: 'X', rarity: 'common', weight: 8, type: 'debuff', effect: { type: 'freeze' }, duration: 30000 },
+            { id: 'size500', name: 'Размер +500', icon: '+', rarity: 'epic', weight: 4, type: 'instant', effect: { type: 'instantSize', value: 500 } },
+            { id: 'doom', name: 'Рок -70%', icon: 'D', rarity: 'legendary', weight: 0.5, type: 'debuff', effect: { type: 'percentLoss', value: 0.7 }, duration: 0 }
+        ];
+
+        const RARITY = {
+            common: { bg: '#3a3a4a', border: '#5a5a6a', cls: 'RARITY-COMMON' },
+            rare: { bg: 'linear-gradient(135deg, #b366ff, #8b5cf6)', border: '#b366ff', cls: 'RARITY-RARE' },
+            epic: { bg: 'linear-gradient(135deg, #fbbf24, #f59e0b)', border: '#fbbf24', cls: 'RARITY-EPIC' },
+            legendary: { bg: 'linear-gradient(135deg, #ff4d8d, #f43f5e)', border: '#ff4d8d', cls: 'RARITY-LEGENDARY' }
+        };
+
+        const LEADERBOARD_DATA = [
+            { name: 'Алиса', size: 15840, coins: 892000, time: 36000000, achievements: ['click10000', 'size10000', 'coins1m', 'time10h', 'case50'] },
+            { name: 'Мария', size: 12350, coins: 654000, time: 28000000, achievements: ['click5000', 'size5000', 'coins10k', 'time1h'] },
+            { name: 'Даша', size: 5000, coins: 512000, time: 19000000, achievements: ['click1000', 'size1000'] },
+            { name: 'Света', size: 1200, coins: 398000, time: 12000000, achievements: ['click100', 'size100'] },
+            { name: 'Оля', size: 300, coins: 287000, time: 8000000, achievements: ['click100'] },
+        ];
+
+        // ============================================
+        // AUDIO ENGINE
+        // ============================================
+        
+        let audioCtx;
+        function initAudio() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        function playSound(type) {
+            if (!audioCtx) initAudio();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(400, now + 0.1);
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else if (type === 'buy') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.setValueAtTime(900, now + 0.1);
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                osc.start(now);
+                osc.stop(now + 0.2);
+            } else if (type === 'levelup') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.setValueAtTime(600, now + 0.1);
+                osc.frequency.setValueAtTime(800, now + 0.2);
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'crit') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(1000, now);
+                osc.frequency.exponentialRampToValueAtTime(1500, now + 0.05);
+                osc.frequency.exponentialRampToValueAtTime(600, now + 0.15);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                osc.start(now);
+                osc.stop(now + 0.2);
             }
         }
 
-        function initThreeJS() {
-            const canvas = document.getElementById('modelCanvas');
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        // ============================================
+        // THREE.JS SETUP
+        // ============================================
+        
+        let els = {};
+        let scene, camera, renderer, breastGroup;
+        let targetScale = 1;
+        let currentScale = 1;
+        let pulseEffect = 0;
+        let autoclickInterval = null;
+        let upgradeAutoInterval = null;
+
+        function initThree() {
+            const canvas = els.modelCanvas;
+            const rect = canvas.parentElement.getBoundingClientRect();
+
+            scene = new THREE.Scene();
             
-            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-            renderer.setClearColor(0x000000, 0);
-            renderer.shadowMap.enabled = true;
+            camera = new THREE.PerspectiveCamera(45, rect.width / rect.height, 0.1, 100);
+            camera.position.set(0, 0.3, 4.5);
+            camera.lookAt(0, 0, 0);
             
-            // Create custom breast geometry
-            const geometry = createBreastGeometry();
-            
-            // Create material with skin-like appearance
-            const canvas2D = document.createElement('canvas');
-            canvas2D.width = 512;
-            canvas2D.height = 512;
-            const ctx = canvas2D.getContext('2d');
-            
-            // Create skin texture
-            ctx.fillStyle = '#e8b4a8';
-            ctx.fillRect(0, 0, 512, 512);
-            
-            // Add subtle skin variations
-            for (let i = 0; i < 1000; i++) {
-                ctx.fillStyle = `rgba(200, 150, 140, ${Math.random() * 0.3})`;
-                ctx.fillRect(Math.random() * 512, Math.random() * 512, Math.random() * 5, Math.random() * 5);
-            }
-            
-            const texture = new THREE.CanvasTexture(canvas2D);
-            texture.magFilter = THREE.LinearFilter;
-            texture.minFilter = THREE.LinearMipMapLinearFilter;
-            
-            const material = new THREE.MeshPhongMaterial({
-                map: texture,
-                color: 0xf5d5c8,
-                emissive: 0x8b6f47,
-                emissiveIntensity: 0.2,
-                shininess: 60,
-                wireframe: false
-            });
-            
-            const mesh = new THREE.Mesh(geometry, material);
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-            scene.add(mesh);
-            
-            // Add nipples
-            addNipples(scene, mesh);
-            
-            // Lighting setup
-            const mainLight = new THREE.PointLight(0xffffff, 1.2);
-            mainLight.position.set(3, 4, 5);
-            mainLight.castShadow = true;
-            mainLight.shadow.mapSize.width = 2048;
-            mainLight.shadow.mapSize.height = 2048;
-            scene.add(mainLight);
-            
-            const fillLight = new THREE.PointLight(0xff9999, 0.6);
-            fillLight.position.set(-3, 2, 3);
+            renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            renderer.setSize(rect.width, rect.height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
+
+            const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambient);
+
+            const keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            keyLight.position.set(5, 5, 5);
+            scene.add(keyLight);
+
+            const fillLight = new THREE.DirectionalLight(0xff4d8d, 0.5);
+            fillLight.position.set(-5, 0, 2);
             scene.add(fillLight);
-            
-            const ambientLight = new THREE.AmbientLight(0xd4a5a5, 0.6);
-            scene.add(ambientLight);
-            
-            camera.position.z = 3.5;
-            
-            // Animation loop
-            function animate() {
-                requestAnimationFrame(animate);
-                mesh.rotation.x += 0.003;
-                mesh.rotation.y += 0.006;
-                
-                // Scale based on size
-                const scale = 1 + (state.size / 1500);
-                mesh.scale.set(scale, scale, scale);
-                
-                renderer.render(scene, camera);
-            }
+
+            const rimLight = new THREE.DirectionalLight(0xb366ff, 0.3);
+            rimLight.position.set(0, -5, -5);
+            scene.add(rimLight);
+
+            // Subtle point light for specular highlights on nipples
+            const specLight = new THREE.PointLight(0xffffff, 0.8, 10);
+            specLight.position.set(0, 2, 4);
+            scene.add(specLight);
+
+            createBreasts();
             animate();
         }
-        
-        function createBreastGeometry() {
-            // Create a custom geometry for realistic breast shape
-            const geometry = new THREE.BufferGeometry();
-            const vertices = [];
-            const indices = [];
-            const normals = [];
-            
-            const segments = 32;
-            const rings = 24;
-            const radius = 1;
-            
-            // Create vertices for a more realistic breast shape
-            for (let ring = 0; ring <= rings; ring++) {
-                const theta = (ring / rings) * Math.PI;
-                const sinTheta = Math.sin(theta);
-                const cosTheta = Math.cos(theta);
-                
-                for (let seg = 0; seg <= segments; seg++) {
-                    const phi = (seg / segments) * Math.PI * 2;
-                    const sinPhi = Math.sin(phi);
-                    const cosPhi = Math.cos(phi);
-                    
-                    // Create breast-like shape with more curvature
-                    let x = radius * sinTheta * cosPhi;
-                    let y = radius * cosTheta;
-                    let z = radius * sinTheta * sinPhi;
-                    
-                    // Add bulge for more realistic appearance
-                    const bulge = 0.3 * (1 - Math.abs(cosTheta));
-                    x *= (1 + bulge * 0.5);
-                    z *= (1 + bulge * 0.5);
-                    
-                    vertices.push(x, y, z);
-                }
-            }
-            
-            // Create indices
-            for (let ring = 0; ring < rings; ring++) {
-                for (let seg = 0; seg < segments; seg++) {
-                    const a = ring * (segments + 1) + seg;
-                    const b = a + segments + 1;
-                    
-                    indices.push(a, b, a + 1);
-                    indices.push(b, b + 1, a + 1);
-                }
-            }
-            
-            geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
-            geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(indices), 1));
-            geometry.computeVertexNormals();
-            
-            return geometry;
-        }
-        
-        function addNipples(scene, parentMesh) {
-            // Create nipples with realistic appearance
-            const nipplePositions = [
-                { x: -0.35, y: 0.3, z: 0.9 },  // Left nipple
-                { x: 0.35, y: 0.3, z: 0.9 }    // Right nipple
-            ];
-            
-            nipplePositions.forEach(pos => {
-                // Nipple base (darker areola)
-                const areolGeometry = new THREE.CylinderGeometry(0.12, 0.12, 0.02, 16);
-                const areolMaterial = new THREE.MeshPhongMaterial({
-                    color: 0xc97a7a,
-                    emissive: 0x8b5a5a,
-                    emissiveIntensity: 0.3,
-                    shininess: 40
-                });
-                const areol = new THREE.Mesh(areolGeometry, areolMaterial);
-                areol.position.set(pos.x, pos.y, pos.z);
-                areol.rotation.x = Math.PI / 2;
-                areol.castShadow = true;
-                areol.receiveShadow = true;
-                scene.add(areol);
-                
-                // Nipple (protruding part)
-                const nippleGeometry = new THREE.CylinderGeometry(0.06, 0.08, 0.08, 16);
-                const nippleMaterial = new THREE.MeshPhongMaterial({
-                    color: 0xd94545,
-                    emissive: 0xa03030,
-                    emissiveIntensity: 0.4,
-                    shininess: 50
-                });
-                const nipple = new THREE.Mesh(nippleGeometry, nippleMaterial);
-                nipple.position.set(pos.x, pos.y, pos.z + 0.06);
-                nipple.rotation.x = Math.PI / 2;
-                nipple.castShadow = true;
-                nipple.receiveShadow = true;
-                scene.add(nipple);
+
+        function createBreasts() {
+            breastGroup = new THREE.Group();
+
+            const skinMat = new THREE.MeshStandardMaterial({
+                color: 0xffdbd0,
+                roughness: 0.35,
+                metalness: 0.02,
             });
-        }
 
-        function createFloatingNumber(value) {
-            const num = document.createElement('div');
-            num.className = 'float-num';
-            num.textContent = '+' + value;
-            num.style.left = Math.random() * 100 + '%';
-            num.style.top = '50%';
-            document.body.appendChild(num);
-            setTimeout(() => num.remove(), 1000);
-        }
-
-        function createParticles() {
-            for (let i = 0; i < 8; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                const angle = (i / 8) * Math.PI * 2;
-                const distance = 100;
-                particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
-                particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
-                particle.style.left = '50%';
-                particle.style.top = '50%';
-                document.body.appendChild(particle);
-                setTimeout(() => particle.remove(), 800);
+            // Improved breast shape using LatheGeometry with better profile
+            function createBreastGeometry() {
+                const points = [];
+                // Create a rounder, more natural breast profile
+                const segments = 20;
+                for (let i = 0; i <= segments; i++) {
+                    const t = i / segments; // 0 (tip) to 1 (base)
+                    let r;
+                    if (t < 0.05) {
+                        // Nipple area - slight indent/flat
+                        r = t * 3.0;
+                    } else if (t < 0.3) {
+                        // Upper curve - smooth ramp
+                        r = 0.15 + Math.pow((t - 0.05) / 0.25, 0.7) * 0.55;
+                    } else if (t < 0.7) {
+                        // Main body - fullest part
+                        const bodyT = (t - 0.3) / 0.4;
+                        r = 0.7 + Math.sin(bodyT * Math.PI) * 0.12;
+                    } else {
+                        // Lower/base - tapers back
+                        const baseT = (t - 0.7) / 0.3;
+                        r = 0.7 * (1 - Math.pow(baseT, 0.8) * 0.65);
+                    }
+                    
+                    const y = t * 1.3;
+                    points.push(new THREE.Vector2(r, y));
+                }
+                // Close at base
+                points.push(new THREE.Vector2(0, 1.3));
+                
+                return new THREE.LatheGeometry(points, 48);
             }
-        }
 
-        function updateUI() {
-            document.getElementById('coinCount').textContent = state.coins;
-            document.getElementById('sizeCount').textContent = state.size;
-            document.getElementById('modelSize').textContent = state.size;
-            document.getElementById('perClickVal').textContent = '+' + (1 + (state.upgrades['click-power']?.level || 0));
+            const breastGeo = createBreastGeometry();
+
+            const breastL = new THREE.Mesh(breastGeo, skinMat);
+            breastL.rotation.x = -Math.PI / 2;
+            breastL.position.set(-0.6, 0, 0);
+            breastGroup.add(breastL);
+
+            const breastR = new THREE.Mesh(breastGeo, skinMat);
+            breastR.rotation.x = -Math.PI / 2;
+            breastR.position.set(0.6, 0, 0);
+            breastGroup.add(breastR);
+
+            // ========================================
+            // IMPROVED NIPPLES - Round, convex, realistic
+            // ========================================
             
-            // Update level
-            const level = Math.floor(state.size / SIZE_PER_LEVEL) + 1;
-            const progress = (state.size % SIZE_PER_LEVEL) / SIZE_PER_LEVEL * 100;
-            document.getElementById('currentLevel').textContent = `Уровень ${level}`;
-            document.getElementById('levelProgress').style.width = progress + '%';
-            document.getElementById('nextLevelBonus').textContent = `Бонус: +${Math.floor(level * 5)}%`;
+            // 1. Areola - slightly raised bumpy ring
+            const areolaMat = new THREE.MeshStandardMaterial({ 
+                color: 0xd4787a,
+                roughness: 0.55,
+                metalness: 0.0,
+            });
+            
+            // Areola as a slightly convex disc (flattened sphere)
+            const areolaGeo = new THREE.SphereGeometry(0.22, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2);
+            
+            const areolaL = new THREE.Mesh(areolaGeo, areolaMat);
+            areolaL.position.set(0, 0.01, 0);
+            areolaL.scale.set(1, 0.15, 1); // Very flat dome
+            breastL.add(areolaL);
+
+            const areolaR = new THREE.Mesh(areolaGeo, areolaMat);
+            areolaR.position.set(0, 0.01, 0);
+            areolaR.scale.set(1, 0.15, 1);
+            breastR.add(areolaR);
+
+            // 2. Nipple - round protruding button
+            const nippleMat = new THREE.MeshStandardMaterial({ 
+                color: 0xc05060,
+                roughness: 0.4,
+                metalness: 0.05,
+            });
+            
+            // Create nipple using a custom LatheGeometry for a rounded button shape
+            function createNippleGeometry() {
+                const pts = [];
+                const segs = 16;
+                for (let i = 0; i <= segs; i++) {
+                    const t = i / segs; // 0 = base, 1 = tip
+                    let r;
+                    if (t < 0.2) {
+                        // Base - wider
+                        r = 0.12 - t * 0.05;
+                    } else if (t < 0.7) {
+                        // Body - consistent cylinder-ish
+                        r = 0.11 - (t - 0.2) * 0.02;
+                    } else {
+                        // Top - rounded dome
+                        const domeT = (t - 0.7) / 0.3;
+                        r = 0.09 * Math.cos(domeT * Math.PI / 2);
+                    }
+                    pts.push(new THREE.Vector2(r, t * 0.12));
+                }
+                return new THREE.LatheGeometry(pts, 24);
+            }
+            
+            const nippleGeo = createNippleGeometry();
+            
+            const nippleL = new THREE.Mesh(nippleGeo, nippleMat);
+            nippleL.position.set(0, 0.02, 0);
+            breastL.add(nippleL);
+
+            const nippleR = new THREE.Mesh(nippleGeo, nippleMat);
+            nippleR.position.set(0, 0.02, 0);
+            breastR.add(nippleR);
+
+            // 3. Tiny bumps on areola (Montgomery tubercles) for realism
+            const bumpMat = new THREE.MeshStandardMaterial({
+                color: 0xd07070,
+                roughness: 0.5,
+            });
+            const bumpGeo = new THREE.SphereGeometry(0.015, 8, 8);
+            
+            function addBumps(parent) {
+                const bumpCount = 8;
+                for (let i = 0; i < bumpCount; i++) {
+                    const angle = (i / bumpCount) * Math.PI * 2;
+                    const radius = 0.15 + Math.random() * 0.04;
+                    const bump = new THREE.Mesh(bumpGeo, bumpMat);
+                    bump.position.set(
+                        Math.cos(angle) * radius,
+                        0.025,
+                        Math.sin(angle) * radius
+                    );
+                    bump.scale.setScalar(0.8 + Math.random() * 0.4);
+                    parent.add(bump);
+                }
+            }
+            
+            addBumps(breastL);
+            addBumps(breastR);
+
+            scene.add(breastGroup);
+            updateTargetScale();
         }
 
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast show ' + type;
-            setTimeout(() => toast.classList.remove('show'), 3000);
+        function updateTargetScale() {
+            const base = 0.8;
+            const growth = Math.sqrt(state.size) * 0.1;
+            targetScale = Math.min(base + growth, 2.5); 
         }
 
-        function closeModal() {
-            document.getElementById('modalOverlay').classList.remove('show');
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const t = Date.now() * 0.001;
+
+            currentScale += (targetScale - currentScale) * 0.1;
+            
+            const finalScale = currentScale * (1 + pulseEffect);
+            pulseEffect *= 0.85; 
+
+            const breath = Math.sin(t * 2) * 0.008;
+
+            if (breastGroup) {
+                breastGroup.children.forEach((breast, i) => {
+                    const scale = finalScale * (1 + breath);
+                    breast.scale.setScalar(scale);
+                    
+                    const separation = 0.6 + (scale - 0.8) * 0.1;
+                    breast.position.x = i === 0 ? -separation : separation;
+                });
+
+                breastGroup.rotation.y = Math.sin(t * 0.5) * 0.05;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // ============================================
+        // LOGIC
+        // ============================================
+
+        function saveState() {
+            localStorage.setItem('bustClickerV4', JSON.stringify(state));
         }
 
         function loadState() {
-            const saved = localStorage.getItem('bustClickerState');
+            const saved = localStorage.getItem('bustClickerV4');
             if (saved) {
-                state = { ...state, ...JSON.parse(saved) };
+                const parsed = JSON.parse(saved);
+                state = { ...state, ...parsed };
+                if (!state.upgrades) state.upgrades = {};
+                state.activeEffects = state.activeEffects.filter(e => !e.endTime || e.endTime > Date.now());
             }
         }
 
-        function saveState() {
-            localStorage.setItem('bustClickerState', JSON.stringify(state));
+        function showToast(msg, type = 'success') {
+            els.toast.textContent = msg;
+            els.toast.className = 'toast ' + type + ' show';
+            setTimeout(() => els.toast.classList.remove('show'), 2500);
         }
 
-        function startGameLoop() {
-            setInterval(() => {
-                // Passive income
-                const passiveLevel = state.upgrades['passive-income']?.level || 0;
-                if (passiveLevel > 0) {
-                    state.coins += passiveLevel * 0.1;
-                    updateUI();
-                    saveState();
+        function formatTime(ms) {
+            if (ms <= 0) return '0с';
+            const h = Math.floor(ms / 3600000);
+            const m = Math.floor((ms % 3600000) / 60000);
+            const s = Math.floor((ms % 60000) / 1000);
+            if (h > 0) return `${h}ч ${m}м`;
+            if (m > 0) return `${m}м ${s}с`;
+            return `${s}с`;
+        }
+        
+        function formatTimeShort(ms) {
+            const h = Math.floor(ms / 3600000);
+            const m = Math.floor((ms % 3600000) / 60000);
+            const s = Math.floor((ms % 60000) / 1000);
+            return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        }
+
+        function weightedRandom(items) {
+            const total = items.reduce((s, i) => s + i.weight, 0);
+            let r = Math.random() * total;
+            for (const item of items) {
+                r -= item.weight;
+                if (r <= 0) return item;
+            }
+            return items[0];
+        }
+
+        function getLevel() {
+            const effects = getAllUpgradeEffects();
+            const reduction = effects.levelReduction || 0;
+            const sizePerLvl = Math.max(10, SIZE_PER_LEVEL - reduction);
+            return Math.floor(state.size / sizePerLvl);
+        }
+
+        function getLevelProgress() {
+            const effects = getAllUpgradeEffects();
+            const reduction = effects.levelReduction || 0;
+            const sizePerLvl = Math.max(10, SIZE_PER_LEVEL - reduction);
+            const currentLevelSize = getLevel() * sizePerLvl;
+            const progress = state.size - currentLevelSize;
+            return (progress / sizePerLvl) * 100;
+        }
+
+        function getLevelBonus() {
+            const level = getLevel();
+            const effects = getAllUpgradeEffects();
+            const basePct = 0.01 + (effects.levelBonusMod || 0) / 100;
+            return level * basePct;
+        }
+
+        function calcPerClick() {
+            const effects = getAllUpgradeEffects();
+            const now = Date.now();
+            
+            // Base click = 1 + upgrade bonus
+            let base = 1 + (effects.clickBonus || 0);
+            
+            // Upgrade multiplier
+            base *= (effects.clickMulti || 1);
+            
+            // Global multiplier from upgrades
+            base *= (effects.globalMulti || 1);
+            
+            // Active effects from shop/cases
+            state.activeEffects.forEach(e => {
+                if (e.endTime > now && e.effect.type === 'multiply') {
+                    base *= e.effect.value;
                 }
-            }, 1000);
+            });
+
+            // Level bonus
+            const levelBonus = 1 + getLevelBonus();
+            base *= levelBonus;
+            
+            return Math.max(1, Math.floor(base));
         }
 
-        // Start the game
-        init();
+        function isFrozen() {
+            return state.activeEffects.some(e => e.effect.type === 'freeze' && e.endTime > Date.now());
+        }
+
+        function handleClick(e) {
+            if (isFrozen()) {
+                showToast('Заморожено! ❄️', 'error');
+                return;
+            }
+            
+            const effects = getAllUpgradeEffects();
+            let amount = calcPerClick();
+            let isCrit = false;
+            let isLucky = false;
+            
+            // Critical hit check
+            if (Math.random() < (effects.critChance || 0)) {
+                amount *= 5;
+                isCrit = true;
+            }
+            
+            // Lucky star check
+            if (!isCrit && Math.random() < (effects.luckyChance || 0)) {
+                amount *= 10;
+                isLucky = true;
+            }
+            
+            const oldLevel = getLevel();
+            
+            state.size += amount;
+            state.totalClicks++;
+            
+            // Coin magnet check
+            if (Math.random() < (effects.coinChance || 0)) {
+                const coinGain = effects.coinAmount || 1;
+                state.coins += coinGain;
+            }
+
+            const newLevel = getLevel();
+            if (newLevel > oldLevel) {
+                showToast(`⬆️ Уровень ${newLevel}! Бонус +${(getLevelBonus() * 100).toFixed(1)}%`, 'success');
+                playSound('levelup');
+            } else if (isCrit) {
+                playSound('crit');
+            } else if (isLucky) {
+                playSound('crit');
+            } else {
+                playSound('click');
+            }
+
+            pulseEffect = isCrit || isLucky ? 0.4 : 0.2; 
+            updateTargetScale(); 
+            
+            checkAchievements();
+            updateUI();
+            saveState();
+            
+            createFloatingNum(amount, e, isCrit, isLucky);
+            createParticles(e);
+            if (isCrit || isLucky) {
+                createParticles(e);
+                createParticles(e);
+            }
+            createHeart(e);
+        }
+
+        function createFloatingNum(amount, e, isCrit = false, isLucky = false) {
+            const num = document.createElement('div');
+            num.className = 'float-num';
+            let prefix = '+';
+            if (isCrit) prefix = 'КРИТ! +';
+            if (isLucky) prefix = '⭐ УДАЧА! +';
+            num.textContent = prefix + amount;
+            if (isCrit) num.style.color = '#fbbf24';
+            if (isLucky) num.style.color = '#00ffff';
+            if (isCrit || isLucky) num.style.fontSize = '30px';
+            const rect = els.modelContainer.getBoundingClientRect();
+            num.style.left = rect.left + rect.width / 2 + (Math.random() - 0.5) * 40 + 'px';
+            num.style.top = rect.top + rect.height * 0.3 + 'px';
+            document.body.appendChild(num);
+            setTimeout(() => num.remove(), 800);
+        }
+
+        function createParticles(e) {
+            const rect = els.modelContainer.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            const colors = ['#ff4d8d', '#b366ff', '#fbbf24', '#4ade80'];
+            
+            for (let i = 0; i < 8; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.left = x + 'px';
+                p.style.top = y + 'px';
+                p.style.setProperty('--tx', (Math.random() - 0.5) * 120 + 'px');
+                p.style.setProperty('--ty', (Math.random() - 0.5) * 120 + 'px');
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 600);
+            }
+        }
+
+        function createHeart(e) {
+            const rect = els.modelContainer.getBoundingClientRect();
+            const h = document.createElement('div');
+            h.className = 'heart-particle';
+            h.innerHTML = '❤';
+            h.style.left = rect.left + rect.width / 2 + (Math.random() - 0.5) * 60 + 'px';
+            h.style.top = rect.top + rect.height * 0.4 + 'px';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 1000);
+        }
+
+        function exchangeSize() {
+            const amount = parseInt(els.exchangeAmount.value) || 0;
+            if (amount <= 0) return showToast('Введите сумму', 'error');
+            if (amount > state.size) return showToast('Недостаточно размера', 'error');
+            
+            state.size -= amount;
+            
+            const effects = getAllUpgradeEffects();
+            const hasGoldenTouch = state.inventory.some(i => i.id === 'golden_touch');
+            let rate = EXCHANGE_RATE + (effects.exchangeBonus || 0);
+            if (hasGoldenTouch) rate *= 3;
+            
+            state.coins += Math.floor(amount * rate);
+            state.statsExchanges += amount;
+            
+            updateTargetScale();
+            updateUI();
+            checkAchievements();
+            saveState();
+            showToast(`+${Math.floor(amount * rate).toLocaleString()} монет!`, 'success');
+        }
+
+        // ============================================
+        // UI & RENDERING
+        // ============================================
+
+        function updateUI() {
+            els.coinCount.textContent = state.coins.toLocaleString();
+            els.sizeCount.textContent = state.size.toLocaleString();
+            els.modelSize.textContent = state.size.toLocaleString();
+            els.perClickVal.textContent = '+' + calcPerClick();
+
+            const effects = getAllUpgradeEffects();
+            const rate = EXCHANGE_RATE + (effects.exchangeBonus || 0);
+            els.exchangeRate.textContent = `Курс: 1 ед. размера = ${rate} монет`;
+
+            const level = getLevel();
+            const progress = getLevelProgress();
+            els.currentLevel.textContent = `Уровень ${level}`;
+            els.nextLevelBonus.textContent = `Бонус: +${(getLevelBonus() * 100).toFixed(1)}%`;
+            els.levelProgress.style.width = Math.min(progress, 100) + '%';
+
+            renderInventory();
+            renderActiveEffectsBar();
+            renderLeaderboard();
+        }
+
+        function checkAchievements() {
+            ACHIEVEMENTS.forEach(ach => {
+                if (!state.unlockedAchievements.includes(ach.id) && ach.condition(state)) {
+                    state.unlockedAchievements.push(ach.id);
+                    showToast(`🏆 Достижение: ${ach.name}!`, 'success');
+                }
+            });
+            updateAchievementsUI();
+        }
+
+        function updateAchievementsUI() {
+            els.achGrid.innerHTML = '';
+            els.achProgress.textContent = `${state.unlockedAchievements.length}/${ACHIEVEMENTS.length}`;
+            
+            ACHIEVEMENTS.forEach(ach => {
+                const unlocked = state.unlockedAchievements.includes(ach.id);
+                const div = document.createElement('div');
+                div.className = `ach-item ${unlocked ? 'unlocked' : ''}`;
+                div.innerHTML = `<div class="ach-icon">${ach.icon}</div><div class="ach-name">${ach.name}</div>`;
+                div.onclick = () => showAchievementInfo(ach, div);
+                els.achGrid.appendChild(div);
+            });
+        }
+
+        function showAchievementInfo(ach, element) {
+            document.querySelectorAll('.ach-item').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+
+            const box = els.achInfoBox;
+            box.classList.remove('empty');
+            
+            const unlocked = state.unlockedAchievements.includes(ach.id);
+            
+            box.innerHTML = `
+                <div class="ach-info-title" style="color: ${unlocked ? 'var(--warning)' : 'var(--text-primary)'}">
+                    ${unlocked ? '✅ ' + ach.name + ' (Получено)' : '🔒 ' + ach.name}
+                </div>
+                <div class="ach-info-desc">${ach.desc}</div>
+            `;
+        }
+
+        function renderShop() {
+            els.shopGrid.innerHTML = '';
+            SHOP_DB.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'shop-item';
+                div.innerHTML = `
+                    <div class="shop-item-icon" style="background: ${item.color}; color: #0d0d12;">${item.icon}</div>
+                    <div class="shop-item-info">
+                        <div class="shop-item-name">${item.name}</div>
+                        <div class="shop-item-desc">${item.desc}</div>
+                    </div>
+                    <div class="shop-item-price">$ ${item.price.toLocaleString()}</div>
+                `;
+                div.addEventListener('click', () => buyItem(item));
+                els.shopGrid.appendChild(div);
+            });
+        }
+
+        function buyItem(item) {
+            if (state.coins < item.price) return showToast('Недостаточно монет!', 'error');
+            
+            state.coins -= item.price;
+            playSound('buy');
+
+            if (item.type === 'instant') {
+                if (item.effect.type === 'instantSize') {
+                    state.size += item.effect.value;
+                    updateTargetScale();
+                    showToast(`+${item.effect.value} к размеру!`, 'success');
+                } else if (item.effect.type === 'instantTime') {
+                    state.totalPlayTime += item.effect.value;
+                    showToast(`+${formatTime(item.effect.value)}!`, 'success');
+                }
+            } else if (item.type === 'passive') {
+                state.inventory.push({ ...item, obtainedAt: Date.now() });
+                showToast(`${item.name} активировано!`, 'success');
+            } else {
+                state.inventory.push({ ...item, obtainedAt: Date.now() });
+                showToast(`${item.name} в инвентаре!`, 'success');
+            }
+            updateUI();
+            saveState();
+        }
+
+        function renderCases() {
+            els.casesGrid.innerHTML = '';
+            CASES.forEach(c => {
+                const div = document.createElement('div');
+                div.className = `case-card ${c.rarity}`;
+                div.innerHTML = `
+                    <div class="case-icon ${RARITY[c.rarity].cls}">${c.icon}</div>
+                    <div class="case-name">${c.name}</div>
+                    <div class="case-desc">${c.desc}</div>
+                    <div class="case-price">$ ${c.price.toLocaleString()}</div>
+                `;
+                div.addEventListener('click', () => openCase(c));
+                els.casesGrid.appendChild(div);
+            });
+        }
+
+        function openCase(c) {
+            if (state.coins < c.price) return showToast('Недостаточно монет!', 'error');
+            state.coins -= c.price;
+            state.statsCases++;
+            playSound('buy');
+            
+            const reward = weightedRandom(CASE_REWARDS);
+            showRewardModal(reward);
+        }
+
+        function showRewardModal(reward) {
+            els.modalIcon.style.display = 'flex';
+            els.modalIcon.className = 'modal-icon';
+            els.modalIcon.classList.add(RARITY[reward.rarity].cls);
+            els.modalIcon.textContent = reward.icon;
+            
+            els.modalTitle.textContent = reward.name;
+            els.modalTitle.style.color = RARITY[reward.rarity].border;
+            
+            const rarityNames = { common: 'Обычный', rare: 'Редкий', epic: 'Эпический', legendary: 'Легендарный' };
+            els.modalDesc.textContent = rarityNames[reward.rarity] + (reward.type === 'debuff' ? ' (Дебафф!)' : '');
+            els.modalDesc.style.color = reward.type === 'debuff' ? '#f87171' : 'var(--text-secondary)';
+            
+            els.modalProfileStats.innerHTML = '';
+            els.modalAchGrid.innerHTML = '';
+            els.achInfoDisplay.style.display = 'none';
+            
+            els.modalBtn.textContent = 'Забрать';
+            els.modalBtn.onclick = () => claimReward(reward);
+            
+            els.modalOverlay.classList.add('active');
+        }
+
+        function claimReward(reward) {
+            closeModal();
+            if (reward.type === 'debuff') {
+                const shieldIdx = state.inventory.findIndex(i => i.effect.type === 'shield');
+                if (shieldIdx !== -1) {
+                    state.inventory.splice(shieldIdx, 1);
+                    showToast('🛡️ Щит заблокировал дебафф!', 'success');
+                    updateUI(); saveState();
+                    return;
+                }
+            }
+            
+            if (reward.type === 'instant') {
+                state.size += reward.effect.value;
+                updateTargetScale();
+            } else if (reward.type === 'debuff') {
+                if (reward.effect.type === 'percentLoss') {
+                    const loss = Math.floor(state.size * reward.effect.value);
+                    state.size = Math.max(0, state.size - loss);
+                    updateTargetScale();
+                    showToast(`💀 Потеряно ${loss} размера!`, 'error');
+                } else if (reward.duration) {
+                    state.activeEffects.push({ ...reward, endTime: Date.now() + reward.duration });
+                }
+            } else {
+                state.inventory.push({ ...reward, obtainedAt: Date.now() });
+            }
+            
+            updateUI();
+            checkAchievements();
+            saveState();
+        }
+
+        function renderLeaderboard() {
+            const type = els.currentLbType;
+            
+            const allPlayers = [...LEADERBOARD_DATA];
+            allPlayers.push({
+                name: state.userName,
+                size: state.size,
+                coins: state.coins,
+                time: state.totalPlayTime,
+                achievements: state.unlockedAchievements,
+                isCurrentUser: true
+            });
+            
+            allPlayers.sort((a, b) => b[type] - a[type]);
+            
+            const userRank = allPlayers.findIndex(p => p.isCurrentUser) + 1;
+            els.userRank.textContent = `Ранг: #${userRank}`;
+            
+            els.leaderboardList.innerHTML = '';
+            allPlayers.slice(0, 10).forEach((player, idx) => {
+                const div = document.createElement('div');
+                div.className = `leaderboard-item ${player.isCurrentUser ? 'current-user' : ''}`;
+                
+                let rankClass = '';
+                if (idx === 0) rankClass = 'gold';
+                else if (idx === 1) rankClass = 'silver';
+                else if (idx === 2) rankClass = 'bronze';
+                
+                const value = player[type];
+                const displayVal = type === 'time' ? formatTime(value) : value.toLocaleString();
+                
+                div.innerHTML = `
+                    <div class="lb-rank ${rankClass}">${idx + 1}</div>
+                    <div class="lb-avatar">${player.name.charAt(0)}</div>
+                    <div class="lb-info">
+                        <div class="lb-name ${player.isCurrentUser ? 'you' : ''}">${player.name}</div>
+                    </div>
+                    <div class="lb-value">${displayVal}<span>${player.achievements.length} ачивок</span></div>
+                `;
+                
+                div.addEventListener('click', () => showProfile(player));
+                els.leaderboardList.appendChild(div);
+            });
+        }
+        
+        function showProfile(player) {
+            els.modalIcon.style.display = 'none';
+            els.modalTitle.textContent = player.name;
+            els.modalDesc.textContent = player.isCurrentUser ? 'Ваш профиль' : 'Профиль игрока';
+            
+            els.modalProfileStats.innerHTML = `
+                <div class="profile-stats">
+                    <div class="profile-stat"><div class="profile-stat-val">${player.size.toLocaleString()}</div><div class="profile-stat-label">Размер</div></div>
+                    <div class="profile-stat"><div class="profile-stat-val">${player.coins.toLocaleString()}</div><div class="profile-stat-label">Монеты</div></div>
+                    <div class="profile-stat"><div class="profile-stat-val">${formatTime(player.time)}</div><div class="profile-stat-label">Время</div></div>
+                </div>
+            `;
+            
+            els.achInfoDisplay.style.display = 'none';
+            const grid = document.createElement('div');
+            grid.style.display = 'grid';
+            grid.style.gridTemplateColumns = 'repeat(4, 1fr)';
+            grid.style.gap = '6px';
+            
+            ACHIEVEMENTS.forEach(ach => {
+                const unlocked = player.achievements.includes(ach.id);
+                const div = document.createElement('div');
+                div.className = `ach-item ${unlocked ? 'unlocked' : ''}`;
+                div.style.padding = '6px';
+                div.style.borderRadius = '8px';
+                div.style.cursor = 'pointer';
+                div.innerHTML = `<div class="ach-icon" style="width:24px; height:24px; font-size:12px; margin:0 auto;">${ach.icon}</div>`;
+                
+                div.onclick = () => {
+                    els.achInfoDisplay.style.display = 'block';
+                    els.achInfoTitle.textContent = ach.name;
+                    els.achInfoDesc.textContent = ach.desc;
+                    els.achInfoTitle.style.color = unlocked ? 'var(--warning)' : 'var(--text-secondary)';
+                };
+                
+                grid.appendChild(div);
+            });
+            
+            els.modalAchGrid.innerHTML = '';
+            els.modalAchGrid.appendChild(grid);
+            
+            els.modalBtn.textContent = 'Закрыть';
+            els.modalBtn.onclick = closeModal;
+            
+            els.modalOverlay.classList.add('active');
+        }
+
+        function renderInventory() {
+            const now = Date.now();
+            const active = state.activeEffects.filter(e => e.endTime > now);
+            
+            els.activeItems.innerHTML = '';
+            els.noActive.style.display = active.length ? 'none' : 'block';
+            active.forEach(eff => {
+                const left = Math.max(0, eff.endTime - now);
+                const div = document.createElement('div');
+                div.className = `inventory-item active ${eff.type === 'debuff' ? 'debuff' : ''}`;
+                div.innerHTML = `<div class="inv-icon">${eff.icon}</div><div class="inv-name">${eff.name}</div><div class="inv-timer active">${formatTime(left)}</div>`;
+                els.activeItems.appendChild(div);
+            });
+            
+            const usable = state.inventory.filter(i => i.type !== 'instant');
+            els.inventoryGrid.innerHTML = '';
+            els.noInventory.style.display = usable.length ? 'none' : 'block';
+            usable.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = 'inventory-item';
+                div.innerHTML = `<div class="inv-icon">${item.icon}</div><div class="inv-name">${item.name}</div><button class="use-btn">Использовать</button>`;
+                div.querySelector('.use-btn').onclick = () => useItem(item);
+                els.inventoryGrid.appendChild(div);
+            });
+        }
+
+        function useItem(item) {
+            if (item.type === 'shield' || item.type === 'passive') return;
+            state.activeEffects.push({ ...item, endTime: Date.now() + item.duration });
+            state.inventory = state.inventory.filter(i => i !== item);
+            state.statsBuffsUsed++;
+            showToast(`${item.name} активирован!`, 'success');
+            processEffects();
+            checkAchievements();
+            saveState();
+            updateUI();
+        }
+
+        function processEffects() {
+            const now = Date.now();
+            state.activeEffects = state.activeEffects.filter(e => !e.endTime || e.endTime > now);
+            
+            const hasAuto = state.activeEffects.some(e => e.effect.type === 'autoclick' && e.endTime > now);
+            
+            if (hasAuto && !autoclickInterval) {
+                let clickPower = 1;
+                state.activeEffects.forEach(e => {
+                    if (e.endTime > Date.now() && e.effect.type === 'autoclick') {
+                        clickPower = Math.max(clickPower, e.effect.value);
+                    }
+                });
+
+                autoclickInterval = setInterval(() => {
+                    if (!isFrozen()) {
+                        state.size += calcPerClick() * clickPower;
+                        state.totalClicks += clickPower;
+                        pulseEffect = 0.03;
+                        updateTargetScale();
+                        updateUI();
+                        saveState();
+                    }
+                }, 1000);
+            } else if (!hasAuto && autoclickInterval) {
+                clearInterval(autoclickInterval);
+                autoclickInterval = null;
+            }
+        }
+
+        // Upgrade-based auto clicker
+        function processUpgradeAuto() {
+            const effects = getAllUpgradeEffects();
+            const autoPerSec = effects.autoPerSec || 0;
+            
+            if (autoPerSec > 0 && !isFrozen()) {
+                state.size += autoPerSec;
+                updateTargetScale();
+                updateUI();
+                saveState();
+            }
+        }
+
+        function renderActiveEffectsBar() {
+            const now = Date.now();
+            const effects = getAllUpgradeEffects();
+            els.activeEffectsBar.innerHTML = '';
+            
+            // Show upgrade auto-click if active
+            if (effects.autoPerSec > 0) {
+                const pill = document.createElement('div');
+                pill.className = 'effect-pill buff';
+                pill.textContent = `🤖 +${effects.autoPerSec}/с`;
+                els.activeEffectsBar.appendChild(pill);
+            }
+            
+            state.activeEffects.filter(e => e.endTime > now).forEach(eff => {
+                const pill = document.createElement('div');
+                pill.className = `effect-pill ${eff.type === 'debuff' ? 'debuff' : 'buff'}`;
+                pill.textContent = `${eff.icon} ${formatTime(Math.max(0, eff.endTime - now))}`;
+                els.activeEffectsBar.appendChild(pill);
+            });
+        }
+
+        function closeModal() {
+            els.modalOverlay.classList.remove('active');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+            
+            if (tabId === 'upgradeTab') {
+                renderUpgrades();
+            }
+        }
+
+        function init() {
+            els = {
+                userAvatar: document.getElementById('userAvatar'),
+                avatarLetter: document.getElementById('avatarLetter'),
+                userName: document.getElementById('userName'),
+                userRank: document.getElementById('userRank'),
+                coinCount: document.getElementById('coinCount'),
+                sizeCount: document.getElementById('sizeCount'),
+                modelSize: document.getElementById('modelSize'),
+                modelCanvas: document.getElementById('modelCanvas'),
+                modelContainer: document.getElementById('modelContainer'),
+                perClickVal: document.getElementById('perClickVal'),
+                exchangeAmount: document.getElementById('exchangeAmount'),
+                exchangeBtn: document.getElementById('exchangeBtn'),
+                exchangeRate: document.querySelector('.exchange-rate'),
+                activeEffectsBar: document.getElementById('activeEffectsBar'),
+                shopGrid: document.getElementById('shopGrid'),
+                shopTimer: document.getElementById('shopTimer'),
+                casesGrid: document.getElementById('casesGrid'),
+                leaderboardList: document.getElementById('leaderboardList'),
+                activeItems: document.getElementById('activeItems'),
+                noActive: document.getElementById('noActive'),
+                inventoryGrid: document.getElementById('inventoryGrid'),
+                noInventory: document.getElementById('noInventory'),
+                modalOverlay: document.getElementById('modalOverlay'),
+                modalIcon: document.getElementById('modalIcon'),
+                modalTitle: document.getElementById('modalTitle'),
+                modalDesc: document.getElementById('modalDesc'),
+                modalProfileStats: document.getElementById('modalProfileStats'),
+                modalAchGrid: document.getElementById('modalAchGrid'),
+                modalBtn: document.getElementById('modalBtn'),
+                achInfoDisplay: document.getElementById('achInfoDisplay'),
+                achInfoTitle: document.getElementById('achInfoTitle'),
+                achInfoDesc: document.getElementById('achInfoDesc'),
+                toast: document.getElementById('toast'),
+                achGrid: document.getElementById('achGrid'),
+                achProgress: document.getElementById('achProgress'),
+                currentLbType: 'size',
+                currentLevel: document.getElementById('currentLevel'),
+                nextLevelBonus: document.getElementById('nextLevelBonus'),
+                levelProgress: document.getElementById('levelProgress'),
+                achInfoBox: document.getElementById('achInfoBox'),
+                upgradeGrid: document.getElementById('upgradeGrid'),
+            };
+
+            loadState();
+            
+            // Telegram Init
+            if (window.Telegram?.WebApp) {
+                const tg = window.Telegram.WebApp;
+                tg.ready(); tg.expand();
+                const user = tg.initDataUnsafe?.user;
+                if (user) {
+                    state.userName = user.first_name || 'Игрок';
+                    state.userId = 'tg_' + user.id;
+                    els.userName.textContent = state.userName;
+                    els.avatarLetter.textContent = state.userName.charAt(0);
+                    if (user.photo_url) {
+                        const img = document.createElement('img');
+                        img.src = user.photo_url;
+                        els.userAvatar.innerHTML = '';
+                        els.userAvatar.appendChild(img);
+                    }
+                }
+            } else {
+                els.userName.textContent = 'Игрок';
+            }
+
+            initThree();
+            
+            // Events
+            let lastClickTime = 0;
+            els.modelContainer.addEventListener('click', (e) => {
+                const now = Date.now();
+                if (now - lastClickTime < 50) return; // Debounce
+                lastClickTime = now;
+                handleClick(e);
+            });
+            
+            els.exchangeBtn.addEventListener('click', exchangeSize);
+            
+            document.querySelectorAll('.nav-item').forEach(n => n.addEventListener('click', () => switchTab(n.dataset.tab)));
+            
+            document.querySelectorAll('.lb-tab').forEach(t => {
+                t.addEventListener('click', () => {
+                    document.querySelectorAll('.lb-tab').forEach(x => x.classList.remove('active'));
+                    t.classList.add('active');
+                    els.currentLbType = t.dataset.type;
+                    renderLeaderboard();
+                });
+            });
+            
+            els.modalOverlay.addEventListener('click', (e) => { if (e.target === els.modalOverlay) closeModal(); });
+            
+            // Initial Render
+            renderShop();
+            renderCases();
+            renderUpgrades();
+            updateAchievementsUI();
+            updateUI();
+            
+            // Game loops
+            setInterval(() => {
+                if (!document.hidden) state.totalPlayTime += 1000;
+                checkAchievements();
+                saveState();
+            }, 1000);
+            
+            setInterval(processEffects, 1000);
+            
+            // Upgrade auto-clicker runs every second
+            setInterval(processUpgradeAuto, 1000);
+            
+            // Refresh upgrades UI periodically when on that tab
+            setInterval(() => {
+                if (document.getElementById('upgradeTab').classList.contains('active')) {
+                    renderUpgrades();
+                }
+            }, 2000);
+            
+            setInterval(() => {
+                const last = parseInt(localStorage.getItem('shopLastUpdate') || Date.now());
+                els.shopTimer.textContent = formatTimeShort(Math.max(0, SHOP_REFRESH_MS - (Date.now() - last)));
+            }, 1000);
+            
+            // Handle window resize for Three.js
+            window.addEventListener('resize', () => {
+                const rect = els.modelContainer.getBoundingClientRect();
+                if (camera && renderer) {
+                    camera.aspect = rect.width / rect.height;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(rect.width, rect.height);
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
-</html>
+    </html>
